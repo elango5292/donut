@@ -1,0 +1,33 @@
+version: v1
+
+project:
+  name: donut-docvqa-api
+
+build:
+  # Uses your Dockerfile at project root
+  dockerfile: Dockerfile
+
+run:
+  # Expose and route your FastAPI/uvicorn on port 7860
+  port: 7860
+  # Defaults to Dockerfile CMD; can override if needed
+  # command: ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "7860"]
+
+# Optionally, you can mount a volume for cache persistence
+volumes:
+  - source: /app/cache
+    target: cache
+
+# Enable GPU if available (Codesphere auto-provisions shared GPU)
+environment:
+  # No special env vars required; CUDA will be detected automatically
+  # If you need to force CPU, uncomment:
+  # - name: CUDA_VISIBLE_DEVICES
+  #   value: ""
+
+# Health check (optional)
+healthcheck:
+  path: /docs
+  interval: 30s
+  timeout: 5s
+  retries: 3
